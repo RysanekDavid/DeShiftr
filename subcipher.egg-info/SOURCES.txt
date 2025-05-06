@@ -1,0 +1,17 @@
+LICENSE
+README.md
+pyproject.toml
+subcipher/__init__.py
+subcipher/alphabet.py
+subcipher/codec.py
+subcipher/io.py
+subcipher/mh.py
+subcipher/stats.py
+subcipher.egg-info/PKG-INFO
+subcipher.egg-info/SOURCES.txt
+subcipher.egg-info/dependency_links.txt
+subcipher.egg-info/requires.txt
+subcipher.egg-info/top_level.txt
+tests/test_codec.py
+tests/test_mh.py
+tests/test_stats.py

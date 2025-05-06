@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: subcipher
+Version: 0.1.0
+Summary: Toolbox for classic substitution cipher & cryptoanalysis
+Author: Vaše Jméno
+Requires-Python: >=3.10
+License-File: LICENSE
+Requires-Dist: numpy>=1.24
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Dynamic: license-file

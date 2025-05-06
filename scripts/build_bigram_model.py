@@ -4,53 +4,67 @@ Example: python scripts/build_bigram_model.py --input_dir data/raw/corpus --outp
 """
 import argparse
 import os
-# import numpy as np # Placeholder
-# from subcipher.stats import calculate_bigram_frequencies # Placeholder
-# from subcipher.io import save_numpy_array # Placeholder
+import numpy as np
+from pathlib import Path
+
+# Assuming subcipher is installed or PYTHONPATH is set correctly
+from subcipher.stats import transition_matrix
+from subcipher.text_utils import clean_text
 
 def main():
     parser = argparse.ArgumentParser(description="Build a bigram model from a text corpus.")
     parser.add_argument("--input_dir", required=True, help="Directory containing raw text files for the corpus.")
-    parser.add_argument("--output_model", required=True, help="Path to save the generated bigram model (e.g., .npy or .pkl).")
-    # Add more arguments as needed (e.g., alphabet, cleaning options)
+    parser.add_argument("--output_model", required=True, help="Path to save the generated bigram model (e.g., .npy).")
     args = parser.parse_args()
 
     print(f"Building bigram model from corpus in: {args.input_dir}")
     print(f"Output model will be saved to: {args.output_model}")
 
+    input_path = Path(args.input_dir)
+    output_file_path = Path(args.output_model)
+
     corpus_texts = []
-    if not os.path.isdir(args.input_dir):
-        print(f"Error: Input directory '{args.input_dir}' not found.")
+    if not input_path.is_dir():
+        print(f"Error: Input directory '{args.input_dir}' not found or is not a directory.")
         return
 
-    for filename in os.listdir(args.input_dir):
-        filepath = os.path.join(args.input_dir, filename)
-        if os.path.isfile(filepath):
+    for item in input_path.iterdir():
+        if item.is_file():
             try:
-                with open(filepath, 'r', encoding='utf-8') as f: # Specify encoding
+                with open(item, 'r', encoding='utf-8', errors='ignore') as f: # Specify encoding and error handling
                     corpus_texts.append(f.read())
-                print(f"Read file: {filepath}")
+                print(f"Read file: {item}")
             except Exception as e:
-                print(f"Could not read file {filepath}: {e}")
+                print(f"Could not read file {item}: {e}")
 
     if not corpus_texts:
         print("No text files found in the input directory.")
         return
 
-    full_corpus = "\\n".join(corpus_texts) # Join with newlines, or just concatenate
+    full_corpus = "\n".join(corpus_texts) # Join with newlines, or just concatenate
+    print(f"Total raw corpus length: {len(full_corpus)} characters.")
 
-    # --- Placeholder for actual model building logic ---
-    # 1. Preprocess/clean the full_corpus (e.g., remove punctuation, normalize case)
+    # 1. Preprocess/clean the full_corpus
+    print("Cleaning corpus...")
+    cleaned_corpus = clean_text(full_corpus)
+    print(f"Cleaned corpus length: {len(cleaned_corpus)} characters.")
+
+    if not cleaned_corpus:
+        print("Cleaned corpus is empty. Cannot build model.")
+        return
+
     # 2. Calculate bigram frequencies using subcipher.stats
-    # 3. Convert frequencies to a transition matrix (e.g., numpy array)
-    # 4. Save the matrix to args.output_model using subcipher.io
-    # Example:
-    # cleaned_corpus = preprocess_text(full_corpus) # Assuming this function exists
-    # bigram_matrix = calculate_bigram_frequencies(cleaned_corpus, alphabet) # Assuming alphabet is defined
-    # save_numpy_array(args.output_model, bigram_matrix)
-    print(f"Corpus length: {len(full_corpus)} characters.")
-    print("Bigram model building logic not yet implemented.")
-    # --- End Placeholder ---
+    print("Calculating transition matrix...")
+    tm = transition_matrix(cleaned_corpus)
+
+    # 3. Save the matrix
+    try:
+        # Ensure output directory exists
+        output_file_path.parent.mkdir(parents=True, exist_ok=True)
+        np.save(output_file_path, tm)
+        print(f"Bigram model saved successfully to: {args.output_model}")
+    except Exception as e:
+        print(f"Error saving model to {args.output_model}: {e}")
 
 if __name__ == "__main__":
     main()

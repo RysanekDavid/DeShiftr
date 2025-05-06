@@ -2,17 +2,21 @@
 data/model/*.npy
 data/model/*.pkl
 
-# Ignore raw data directory
-data/raw/
-
-# Ignore Python cache
+# Byte‑code & cache
 __pycache__/
-*.pyc
+*.py[cod]
 
 # Ignore Jupyter notebooks (ensure clean versions are committed if needed)
 *.ipynb
+# Jupyter
+.ipynb_checkpoints/
 
-# IDE and OS specific
+# Data
+data/raw/*
+!data/raw/README.md
+exports/*
+
+# IDE and OS specific / OS & IDE
 .vscode/
 .idea/
-*.DS_Store
+.DS_Store

@@ -1,42 +1,17 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "subcipher"
 version = "0.1.0"
-description = "A substitution cipher toolkit"
-readme = "README.md"
-requires-python = ">=3.8"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License", # Or other appropriate license
-    "Operating System :: OS Independent",
-]
-dependencies = [
-    "numpy",
-    # Add other dependencies here
-]
+description = "Toolbox for classic substitution cipher & cryptoanalysis"
+authors = [{name = "Vaše Jméno"}]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24"]
 
 [project.optional-dependencies]
-dev = [
-    "pytest",
-    "flake8",
-    "black",
-    "isort",
-    "pre-commit",
-    "jupyter",
-]
+dev = ["pytest", "pytest-cov", "black", "flake8", "pre-commit"]
 
-[project.urls]
-"Homepage" = "https://github.com/RysanekDavid/DeShiftr"
-"Bug Tracker" = "https://github.com/RysanekDavid/DeShiftr/issues"
-
-[tool.pytest.ini_options]
-addopts = "-q --cov=subcipher --cov-report term-missing"
-testpaths = [
-    "tests",
-]
-python_files = "test_*.py"
-python_classes = "Test*"
-python_functions = "test_*"
+[tool.setuptools]
+packages = ["subcipher"]

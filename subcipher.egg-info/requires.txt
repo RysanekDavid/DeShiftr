@@ -1,0 +1,8 @@
+numpy>=1.24
+
+[dev]
+pytest
+pytest-cov
+black
+flake8
+pre-commit
