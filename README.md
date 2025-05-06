@@ -20,8 +20,8 @@ This project is a toolkit for working with substitution ciphers. It includes fun
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/subcipher.git # Replace with actual URL
-   cd subcipher
+   git clone https://github.com/RysanekDavid/DeShiftr.git
+   cd DeShiftr
    ```
 2. Install the package and its development dependencies:
    ```bash

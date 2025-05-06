@@ -29,8 +29,8 @@ dev = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/yourusername/subcipher" # Replace with actual URL
-"Bug Tracker" = "https://github.com/yourusername/subcipher/issues" # Replace with actual URL
+"Homepage" = "https://github.com/RysanekDavid/DeShiftr"
+"Bug Tracker" = "https://github.com/RysanekDavid/DeShiftr/issues"
 
 [tool.pytest.ini_options]
 addopts = "-q --cov=subcipher --cov-report term-missing"
