@@ -1,0 +1,12 @@
+# This file is typically used for pinning exact versions for reproducibility.
+# For project dependencies, see pyproject.toml.
+# You can generate this file using: pip freeze > requirements.txt
+# Example fixed versions (replace with actual versions from your environment after setup):
+# numpy==1.23.5
+# pytest==7.2.0
+# jupyterlab==3.5.0
+# notebook==6.5.2
+# flake8==6.0.0
+# black==22.10.0
+# isort==5.10.1
+# pre-commit==2.20.0

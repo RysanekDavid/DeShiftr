@@ -1,0 +1,18 @@
+# Ignore large files in data/model
+data/model/*.npy
+data/model/*.pkl
+
+# Ignore raw data directory
+data/raw/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore Jupyter notebooks (ensure clean versions are committed if needed)
+*.ipynb
+
+# IDE and OS specific
+.vscode/
+.idea/
+*.DS_Store

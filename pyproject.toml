@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "subcipher"
+version = "0.1.0"
+description = "A substitution cipher toolkit"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Or other appropriate license
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    # Add other dependencies here
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "flake8",
+    "black",
+    "isort",
+    "pre-commit",
+    "jupyter",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/subcipher" # Replace with actual URL
+"Bug Tracker" = "https://github.com/yourusername/subcipher/issues" # Replace with actual URL
+
+[tool.pytest.ini_options]
+addopts = "-q --cov=subcipher --cov-report term-missing"
+testpaths = [
+    "tests",
+]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
