@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .alphabet import ALPHABET, CHAR2IDX, IDX2CHAR
+from .alphabet import ALPHABET
 
 __all__ = ["encrypt", "decrypt"]
 

@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import logging
-from typing import Tuple, Generator
+from collections.abc import Generator # Changed from typing.Generator
+from typing import Tuple
 
 import numpy as np
 
@@ -14,7 +15,6 @@ from .stats import plausibility
 __all__ = ["crack"]
 
 log = logging.getLogger(__name__)
-DEFAULT_P_BAD = 0.01
 
 
 def _random_keys(rng: np.random.Generator) -> Generator[str, None, None]:
@@ -29,20 +29,17 @@ def crack(
     *,
     iters: int = 20_000,
     start_key: str | None = None,
-    p_bad: float = DEFAULT_P_BAD,
     temp: float = 1.0,
     seed: int | None = None,
-) -> Tuple[str, str, float]:
+) -> tuple[str, str, float]: # Changed from typing.Tuple
     """Vrať (nejlepší_klíč, plaintext, log_L).
 
     Parametry
     ----------
     iters : int
         Počet iterací M‑H.
-    p_bad : float
-        Pravděpodobnost, že přijmeme horší klíč (analog „skok přes bariéru“).
     temp : float
-        Teplota pro soft‑max (vyšší = víc zkoumání prostoru).
+        Teplota pro M‑H (vyšší = víc zkoumání prostoru, nižší = rychlejší konvergence k lokálnímu optimu).
     """
     rng = np.random.default_rng(seed)
     key = start_key or next(_random_keys(rng))
@@ -62,17 +59,22 @@ def crack(
         cand_plain = decrypt(cipher, cand_key)
         cand_ll = plausibility(cand_plain, tm_ref)
 
-        accept = False
-        if cand_ll > ll:  # Candidate is better
-            accept = True
-        elif rng.random() < p_bad:  # Candidate is worse, accept with p_bad probability
-            accept = True
-        # Note: The 'temp' parameter is not used in this acceptance logic if p_bad is a fixed chance.
-        # If 'temp' should be used, the logic would be:
-        # accept_ratio = np.exp((cand_ll - ll) / temp)
-        # if accept_ratio > 1 or rng.random() < accept_ratio * (some_factor_if_p_bad_is_not_fixed_chance)
-        # For now, strictly following the user's pseudocode for the ELSE IF part.
-        # The pseudocode implies p_bad is a fixed chance for any worse state.
+        # Metropolis-Hastings acceptance criterion
+        # Based on p_candidate/p_current = exp((log_p_candidate - log_p_current) / temp)
+        
+        delta_ll = cand_ll - ll
+        accept = False # Initialize accept to False
+
+        if temp <= 0:  # Greedy approach for temp = 0 or non-positive temp
+            if delta_ll >= 0: # Accept if candidate is better or equal
+                accept = True
+        else:
+            # Standard Metropolis-Hastings with temperature, following user-provided structure
+            accept_ratio = np.exp(delta_ll / temp)
+            # Accept if candidate is better (accept_ratio > 1),
+            # or if candidate is worse, accept with probability accept_ratio.
+            if accept_ratio > 1 or rng.random() < accept_ratio:
+                accept = True
 
         if accept:
             key, ll, plain = cand_key, cand_ll, cand_plain

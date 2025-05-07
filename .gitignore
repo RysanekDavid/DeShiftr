@@ -20,3 +20,6 @@ exports/*
 .vscode/
 .idea/
 .DS_Store
+
+# Build artifacts
+subcipher.egg-info/

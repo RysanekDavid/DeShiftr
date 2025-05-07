@@ -15,7 +15,7 @@ repos:
       - id: name-tests-test # Checks that test files are named correctly
 
   - repo: https://github.com/psf/black
-    rev: 23.3.0 # Use the latest version compatible with your project
+    rev: 23.11.0 # Updated version
     hooks:
       - id: black
         args: [--line-length=88]
@@ -35,7 +35,7 @@ repos:
     rev: 6.0.0 # Use the latest version
     hooks:
       - id: flake8
-        # args: ['--max-line-length=88', '--extend-ignore=E203,W503'] # Can be configured in .flake8
+        # args: ['--max-line-length=88', '--extend-ignore=E203,W503'] # Configured in pyproject.toml
 # Optional: Pylint (can be slow as a pre-commit hook)
 # -   repo: local
 #     hooks:

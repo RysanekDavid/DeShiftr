@@ -3,17 +3,18 @@
 from __future__ import annotations
 from .alphabet import ALPHABET, CHAR2IDX
 
+__all__ = ["clean_text"]
+
 def clean_text(raw_text: str) -> str:
     """
     Cleans the input text to conform to the project's alphabet.
     - Converts text to uppercase.
-    - Replaces characters not in ALPHABET with '_'.
+    - Discards characters not in ALPHABET.
     - Keeps characters already in ALPHABET.
     """
     cleaned_chars = []
     for char in raw_text.upper():
         if char in CHAR2IDX:
             cleaned_chars.append(char)
-        else:
-            cleaned_chars.append("_")  # Replace unknown chars with underscore
+        # Unknown characters are now discarded
     return "".join(cleaned_chars)

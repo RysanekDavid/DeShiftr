@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "subcipher"
 version = "0.1.0"
 description = "Toolbox for classic substitution cipher & cryptoanalysis"
-authors = [{name = "Vaše Jméno"}]
+authors = [{name = "David Ryšánek"}]
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.24"]
 
@@ -15,3 +15,13 @@ dev = ["pytest", "pytest-cov", "black", "flake8", "pre-commit"]
 
 [tool.setuptools]
 packages = ["subcipher"]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]

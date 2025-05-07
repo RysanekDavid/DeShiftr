@@ -14,6 +14,10 @@ def export_result(
     dest: str | Path = "exports",
 ) -> None:
     """Uloží plaintext a klíč do správně pojmenovaných souborů."""
+    if length != len(plaintext):
+        raise ValueError(
+            f"Provided length ({length}) does not match actual plaintext length ({len(plaintext)})."
+        )
     dest = Path(dest)
     dest.mkdir(parents=True, exist_ok=True)
 
