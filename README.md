@@ -1,3 +1,5 @@
+[Česká verze](README.cs.md)
+
 # Substitution Cipher Toolkit
 
 This project is a toolkit for working with substitution ciphers. It includes functionalities for encryption, decryption, statistical analysis, and cryptanalysis using methods like Metropolis-Hastings.
