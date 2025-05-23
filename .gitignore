@@ -8,6 +8,9 @@ __pycache__/
 
 # Ignore Jupyter notebooks (ensure clean versions are committed if needed)
 *.ipynb
+!notebooks/01_demo.ipynb
+!notebooks/02_bigram_model.ipynb
+!notebooks/03_attack.ipynb
 # Jupyter
 .ipynb_checkpoints/
 
