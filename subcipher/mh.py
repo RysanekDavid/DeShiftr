@@ -1,4 +1,4 @@
-"""Metropolis‑Hastings prolomení substituční šifry."""
+"""Metropolis-Hastings cracking of substitution cipher."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 
 
 def _random_keys(rng: np.random.Generator) -> Generator[str, None, None]:
-    """Nekonečný generátor náhodných permutací abecedy."""
+    """Infinite generator of random alphabet permutations."""
     while True:
         yield "".join(rng.permutation(list(ALPHABET)))
 
@@ -32,14 +32,14 @@ def crack(
     temp: float = 1.0,
     seed: int | None = None,
 ) -> tuple[str, str, float]:
-    """Vrať (nejlepší_klíč, plaintext, log_L).
+    """Return (best_key, plaintext, log_L).
 
-    Parametry
+    Parameters
     ----------
     iters : int
-        Počet iterací M‑H.
+        Number of M-H iterations.
     temp : float
-        Teplota pro M‑H (vyšší = víc zkoumání prostoru, nižší = rychlejší konvergence k lokálnímu optimu).
+        Temperature for M-H (higher = more exploration, lower = faster convergence to local optimum).
     """
     rng = np.random.default_rng(seed)
     key = start_key or next(_random_keys(rng))

@@ -1,4 +1,4 @@
-"""Export výsledků do struktury požadované v zadání."""
+"""Export results to the structure required by the assignment."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ def export_result(
     sample_id: int,
     dest: str | Path = "exports",
 ) -> None:
-    """Uloží plaintext a klíč do správně pojmenovaných souborů."""
+    """Saves the plaintext and key to correctly named files."""
     if length != len(plaintext):
         raise ValueError(
             f"Provided length ({length}) does not match actual plaintext length ({len(plaintext)})."

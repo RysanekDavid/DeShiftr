@@ -1,4 +1,4 @@
-"""Modul s definicí abecedy a rychlými převody znak ↔ index."""
+"""Module with alphabet definition and fast char ↔ index conversions."""
 
 from __future__ import annotations
 

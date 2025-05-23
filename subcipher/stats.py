@@ -1,4 +1,4 @@
-"""Bigramová statistika a pravděpodobnostní funkce (likelihood)."""
+"""Bigram statistics and likelihood function."""
 
 from __future__ import annotations
 
@@ -10,10 +10,10 @@ __all__ = ["transition_matrix", "plausibility"]
 
 
 def transition_matrix(text: str) -> np.ndarray:
-    """Relativní bigramová matice (součet = 1).
+    """Relative bigram matrix (sum = 1).
 
-    Nejprve se spočítají absolutní počty bigramů, pak se nulové počty nahradí pseudocountem 1,
-    a až poté se matice normalizuje.
+    First, absolute bigram counts are calculated, then zero counts are replaced by a pseudocount of 1,
+    and only then is the matrix normalized.
     """
     mat = np.zeros((ALPH_LEN, ALPH_LEN), dtype=np.float64)
     idx = np.fromiter(
@@ -29,10 +29,13 @@ def transition_matrix(text: str) -> np.ndarray:
     if np.all(row_sums == 0):
         pass
 
-    # Normalizujeme každý řádek zvlášť, aby součet každého řádku byl 1
-    # Pokud je součet řádku 0 (což by po pseudocountu nemělo nastat),
-    # necháme řádek tak, jak je (plný pseudocountů), a normalizace níže
-    # by měla vytvořit uniformní rozdělení pro ten řádek.
+    # We could normalize each row separately so that the sum of each row is 1
+    # (standard definition of a transition matrix).
+    # If the sum of a row were 0 (which shouldn't happen after applying pseudocounts),
+    # we would leave the row as is (full of pseudocounts), and the normalization below
+    # would aim to create a uniform distribution for that row.
+    # However, the standard approach here is to normalize the entire matrix so that its total sum is 1.
+    # The project assignment specifies "Relative bigram matrix (sum = 1)" globally.
     
     total_sum = mat.sum()
     if total_sum == 0:
@@ -46,6 +49,6 @@ def transition_matrix(text: str) -> np.ndarray:
 
 
 def plausibility(text: str, tm_ref: np.ndarray) -> float:
-    """Log‑likelihood textu vzhledem k referenční matici."""
+    """Log-likelihood of text given a reference matrix."""
     tm_obs = transition_matrix(text)
     return float(np.sum(tm_obs * np.log(tm_ref)))

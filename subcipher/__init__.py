@@ -1,4 +1,4 @@
-"""Substitution‑cipher toolkit (šifrování, dešifrování, kryptoanalýza)."""
+"""Substitution-cipher toolkit (encryption, decryption, cryptanalysis)."""
 
 from importlib.metadata import version as _v
 
