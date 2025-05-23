@@ -14,7 +14,6 @@ __all__ = [
     "export_result",
 ]
 
-# ––––– lokální importy
 from .alphabet import ALPHABET, CHAR2IDX, IDX2CHAR
 from .codec import encrypt, decrypt
 from .stats import transition_matrix, plausibility

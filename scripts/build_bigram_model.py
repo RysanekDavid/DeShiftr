@@ -41,10 +41,9 @@ def main():
         print("No text files found in the input directory.")
         return
 
-    full_corpus = "\n".join(corpus_texts) # Join with newlines, or just concatenate
+    full_corpus = "\n".join(corpus_texts)
     print(f"Total raw corpus length: {len(full_corpus)} characters.")
 
-    # 1. Preprocess/clean the full_corpus
     print("Cleaning corpus...")
     cleaned_corpus = clean_text(full_corpus)
     print(f"Cleaned corpus length: {len(cleaned_corpus)} characters.")
@@ -53,13 +52,10 @@ def main():
         print("Cleaned corpus is empty. Cannot build model.")
         return
 
-    # 2. Calculate bigram frequencies using subcipher.stats
     print("Calculating transition matrix...")
     tm = transition_matrix(cleaned_corpus)
 
-    # 3. Save the matrix
     try:
-        # Ensure output directory exists
         output_file_path.parent.mkdir(parents=True, exist_ok=True)
         np.save(output_file_path, tm)
         print(f"Bigram model saved successfully to: {args.output_model}")

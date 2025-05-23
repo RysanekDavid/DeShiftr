@@ -13,9 +13,9 @@ import argparse
 import numpy as np
 from pathlib import Path
 
-from subcipher.mh import crack, DEFAULT_P_BAD
+from subcipher.mh import crack
 from subcipher.io import export_result
-from subcipher.text_utils import clean_text # For cleaning ciphertext if needed
+from subcipher.text_utils import clean_text
 
 def main():
     parser = argparse.ArgumentParser(description="Run subcipher cryptanalysis attack.")
@@ -35,8 +35,6 @@ def main():
     # Parameters for crack function
     parser.add_argument("--iters", type=int, default=20_000,
                         help="Number of iterations for Metropolis-Hastings.")
-    parser.add_argument("--p_bad", type=float, default=DEFAULT_P_BAD,
-                        help="Probability of accepting a worse key.")
     parser.add_argument("--temp", type=float, default=1.0,
                         help="Temperature for softmax in M-H.")
     parser.add_argument("--seed", type=int, default=None,
@@ -53,12 +51,10 @@ def main():
     print(f"  Output length ID: {args.length}")
     print(f"  Output sample ID: {args.sample_id}")
     print(f"  Crack iterations: {args.iters}")
-    print(f"  Crack p_bad: {args.p_bad}")
     print(f"  Crack temperature: {args.temp}")
     print(f"  Crack seed: {args.seed}")
     print(f"  Crack start_key: {args.start_key if args.start_key else 'Random'}")
 
-    # 1. Load ciphertext
     if not args.ciphertext_file.is_file():
         print(f"Error: Ciphertext file '{args.ciphertext_file}' not found.")
         return
@@ -81,7 +77,6 @@ def main():
         print("Ciphertext is empty after cleaning. Cannot proceed.")
         return
 
-    # 2. Load reference transition matrix
     if not args.model_path.is_file():
         print(f"Error: Reference model file '{args.model_path}' not found.")
         return
@@ -92,7 +87,6 @@ def main():
         print(f"Error loading reference model {args.model_path}: {e}")
         return
 
-    # 3. Run the crack algorithm
     print("Starting cryptanalysis (crack function)...")
     try:
         best_key, plaintext, best_ll = crack(
@@ -100,19 +94,16 @@ def main():
             tm_ref,
             iters=args.iters,
             start_key=args.start_key,
-            p_bad=args.p_bad,
             temp=args.temp,
             seed=args.seed
         )
         print(f"Cryptanalysis finished. Best log-likelihood: {best_ll:.3f}")
         print(f"Found key: {best_key}")
-        # print(f"Decrypted plaintext (first 100 chars): {plaintext[:100]}")
 
     except Exception as e:
         print(f"Error during cryptanalysis: {e}")
         return
 
-    # 4. Save the results
     print(f"Exporting results to directory: {args.output_dir}")
     try:
         export_result(

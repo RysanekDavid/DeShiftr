@@ -16,5 +16,4 @@ def clean_text(raw_text: str) -> str:
     for char in raw_text.upper():
         if char in CHAR2IDX:
             cleaned_chars.append(char)
-        # Unknown characters are now discarded
     return "".join(cleaned_chars)

@@ -14,7 +14,7 @@ def test_crack_short_text():
     plaintext = "".join(rng.choice(list(ALPHABET), 2000))
     cipher = encrypt(plaintext, key_true)
 
-    tm_ref = transition_matrix(plaintext)  # pro unit‑test si pomůžeme
+    tm_ref = transition_matrix(plaintext)  
     key_found, plain_found, _ = crack(cipher, tm_ref, iters=5000, seed=1)
 
     # alespoň 85 % znaků správně
