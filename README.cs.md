@@ -91,7 +91,7 @@ Adresář `scripts/` obsahuje skripty pro dávkové operace. Například:
 
 ```bash
 python scripts/run_attack.py --input data/raw/some_cipher_text.txt --output exports/solved_cipher.txt
-python scripts/build_bigram_model.py --input_dir data/raw/corpus/ --output_model data/model/bigram_matrix.npy
+python scripts/build_bigram_model.py --input_dir data/raw/corpus/ --output_model data/model/reference_tm.npy
 ```
 
 (Poznámka: Toto jsou příklady příkazů; skutečné názvy skriptů a argumenty se mohou lišit.)
