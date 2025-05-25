@@ -4,13 +4,12 @@ from __future__ import annotations
 
 import numpy as np
 
-from .alphabet import ALPH_LEN, CHAR2IDX # Assuming ALPHABET is also available or not needed directly here
+# Ujisti se, že importuješ i ALPHABET, pokud ho budeš používat v debugovacích printech
+from .alphabet import ALPH_LEN, CHAR2IDX, ALPHABET # Přidán ALPHABET
 
 __all__ = ["transition_matrix", "plausibility"]
 
 
-# --- Existing transition_matrix function remains unchanged ---
-# Used for creating TM_ref, which is P_ref (globally normalized)
 def transition_matrix(text: str) -> np.ndarray:
     """Relative bigram matrix (sum of all elements = 1).
 
@@ -25,20 +24,44 @@ def transition_matrix(text: str) -> np.ndarray:
 
     if idx.size >= 2:
         np.add.at(mat, (idx[:-1], idx[1:]), 1)
+    
+    # --- ZAČÁTEK PŘIDANÝCH DEBUGOVACÍCH VÝPISŮ ---
+    print(f"DEBUG transition_matrix: Max count in matrix AFTER raw counting: {np.max(mat)}")
+    print(f"DEBUG transition_matrix: Sum of raw counts (should be len(text)-1): {np.sum(mat)}")
+
+    print("\nDEBUG transition_matrix: Raw counts for some expected frequent bigrams (before smoothing):")
+    frequent_bigrams_to_check = ["E_", "A_", "_S", "ST", "PO", "N_", "NI", "OV"] # Přidej/změň dle potřeby
+    for bigram_str in frequent_bigrams_to_check:
+        if len(bigram_str) == 2 and bigram_str[0] in CHAR2IDX and bigram_str[1] in CHAR2IDX:
+            try:
+                count = mat[CHAR2IDX[bigram_str[0]], CHAR2IDX[bigram_str[1]]]
+                print(f"  Count for '{bigram_str}': {count}")
+            except KeyError: # Nemělo by nastat, pokud jsou znaky v ALPHABET
+                print(f"  Error accessing bigram '{bigram_str}'")
+        else:
+            print(f"  Skipping invalid bigram string for debug: '{bigram_str}'")
+    # --- KONEC PŘIDANÝCH DEBUGOVACÍCH VÝPISŮ ---
 
     mat[mat == 0] = 1.0 # Laplace smoothing
+    # print(f"DEBUG transition_matrix: Max value in matrix AFTER pseudocounts: {np.max(mat)}") # Tento můžeš nechat
+    # print(f"DEBUG transition_matrix: Sum of matrix AFTER pseudocounts: {np.sum(mat)}") # Tento můžeš nechat
 
     total_sum = mat.sum()
+    # print(f"DEBUG transition_matrix: Total sum used for normalization: {total_sum}") # Tento můžeš nechat
+
     if total_sum == 0:
         if ALPH_LEN > 0:
+            # print("DEBUG transition_matrix: total_sum is 0, returning uniform matrix.") # Tento můžeš nechat
             return np.full((ALPH_LEN, ALPH_LEN), 1.0 / (ALPH_LEN * ALPH_LEN), dtype=np.float64)
         else:
-            return mat # Should be an empty matrix if ALPH_LEN is 0
+            # print("DEBUG transition_matrix: total_sum is 0 and ALPH_LEN is 0, returning empty mat.") # Tento můžeš nechat
+            return mat 
 
     mat /= total_sum # Global normalization
+    # print(f"DEBUG transition_matrix: Max probability in matrix AFTER normalization: {np.max(mat)}") # Tento můžeš nechat
+    # print(f"DEBUG transition_matrix: Sum of matrix AFTER normalization: {np.sum(mat)}") # Tento můžeš nechat
     return mat
 
-# --- New helper function for obtaining smoothed counts ---
 def _get_smoothed_bigram_counts(text: str) -> np.ndarray:
     """
     Calculates absolute bigram counts from text, with zeros replaced by a pseudocount of 1.
@@ -55,31 +78,17 @@ def _get_smoothed_bigram_counts(text: str) -> np.ndarray:
     mat[mat == 0] = 1.0 # Laplace smoothing
     return mat
 
-# --- Modified plausibility function ---
 def plausibility(text: str, tm_ref: np.ndarray) -> float:
     """
     Log-likelihood of text given a reference probability matrix (tm_ref).
     tm_ref is expected to be a globally normalized probability matrix (sum of elements = 1).
     The observed matrix from 'text' will be smoothed counts.
     """
-    # Get smoothed absolute counts for the observed text, as per PDF pseudocode for TM_obs
     tm_obs_counts_smoothed = _get_smoothed_bigram_counts(text)
 
-    # tm_ref should already have non-zero probabilities due to smoothing before its normalization.
-    # Taking log directly. Values should be < 0.
-    # Add a small epsilon to tm_ref before log to prevent log(0) if any tm_ref element is exactly zero,
-    # which ideally shouldn't happen if tm_ref was also smoothed before normalization.
-    epsilon = np.finfo(np.float64).eps # Smallest representable positive number
+    epsilon = np.finfo(np.float64).eps 
     log_tm_ref = np.log(tm_ref + epsilon)
 
-
-    # The original feedback included a more complex handling for -inf in log_tm_ref.
-    # Adding epsilon should prevent exact zeros in tm_ref from causing -inf.
-    # If tm_ref can still have zeros due to its generation process (e.g., if it wasn't smoothed),
-    # then the more robust -inf handling might be needed.
-    # For now, relying on tm_ref being well-behaved (smoothed before normalization).
-
-    # Calculate sum of C_obs * log(P_ref)
     likelihood = np.sum(tm_obs_counts_smoothed * log_tm_ref)
     
     return float(likelihood)
