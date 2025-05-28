@@ -1,7 +1,3 @@
-Jasně, rozumím. Necháš `.bat` soubory v kořenovém adresáři. Pojďme tedy vylepšit sekci "Rychlý start" a "Spouštění skriptů" ve tvém `README.md` tak, aby byla co nejjasnější a nejpřesnější, a zahrnovala všechny možnosti spuštění.
-
----
-
 ## Návrh upraveného `README.md`
 
 Zde jsou upravené sekce. Zaměřil jsem se na sjednocení argumentů a přidání poznámek o `.bat` souborech a spouštění notebooků.
