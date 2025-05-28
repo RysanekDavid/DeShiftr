@@ -76,15 +76,15 @@ Tato sekce vás provede základními kroky k prolomení šifry `text_1000_sample
 2.  **Sestavení referenčního bigramového modelu:**
     Tento krok vytvoří soubor `data/model/reference_tm.npy`, který je nezbytný pro kryptoanalýzu.
 
-    - **Možnost A: Použití dávkového souboru (doporučeno pro jednoduchost):**
-      ```bash
-      build_model.bat
-      ```
-    - **Možnost B: Spuštění Python skriptu přímo:**
-      `bash
+        - **Možnost A: Použití dávkového souboru (doporučeno pro jednoduchost):**
+          ```bash
+          build_model.bat
+          ```
+        - **Možnost B: Spuštění Python skriptu přímo:**
+          `bash
+
     python scripts/build_bigram_model.py --input_dir data/raw/corpus/ --output_model data/model/reference_tm.npy
-    `
-      Po úspěšném běhu byste měli vidět zprávu "Bigramový model úspěšně uložen do: data/model/reference_tm.npy" a debugovací výpisy z funkce `transition_matrix`, které potvrzují kvalitu modelu (např. `Max probability ... ~0.019` nebo vyšší).
+    `      Po úspěšném běhu byste měli vidět zprávu "Bigramový model úspěšně uložen do: data/model/reference_tm.npy" a debugovací výpisy z funkce`transition_matrix`, které potvrzují kvalitu modelu (např. `Max probability ... ~0.019` nebo vyšší).
 
 3.  **Spuštění kryptoanalytického útoku:**
     Nyní prolomíme šifru `text_1000_sample_1_ciphertext.txt`. Ujistěte se, že tento soubor je umístěn v `data/test/`.
@@ -169,18 +169,3 @@ Kromě `.bat` souborů můžete skripty spouštět i přímo. Následující př
 ## Licence
 
 Tento projekt je licencován pod licencí MIT - viz soubor [LICENSE](https://www.google.com/search?q=LICENSE) pro podrobnosti.
-
-```
-
-**Klíčové změny a proč:**
-* Přidal jsem na začátek stručný přehled **Struktury projektu**, aby se uživatel lépe orientoval.
-* V sekci **Instalace** jsem doporučil použití virtuálního prostředí.
-* **Rychlý start** je nyní podrobnější:
-    * Krok 1 (Příprava korpusu) je explicitní.
-    * Krok 2 (Sestavení modelu) nabízí možnost `.bat` nebo přímého spuštění skriptu se správnými argumenty. Argument `--input_file` jsem opravil na `--input_dir` podle tvého skriptu.
-    * Krok 3 (Spuštění útoku) také nabízí `.bat`, přímé spuštění skriptu (s opravenými a doplněnými argumenty, které tvůj skript vyžaduje, jako `--length` a `--sample_id`), a také možnost použití Jupyter Notebooku.
-* Sekce **Spouštění notebooků** nyní zdůrazňuje spuštění Jupyteru z kořenového adresáře projektu.
-* Sekce **Spouštění skriptů z příkazové řádky (pokročilé)** dává detailní přehled argumentů pro oba skripty, což odpovídá jejich implementaci. Argumenty `--input` a `--output` jsem nahradil přesnějšími názvy (`--ciphertext_file`, `--output_dir` atd.) podle tvého kódu.
-
-Myslím, že toto README je teď mnohem komplexnější a mělo by uživateli (i učiteli) poskytnout všechny potřebné informace pro úspěšné zprovoznění a použití tvého projektu.
-```
