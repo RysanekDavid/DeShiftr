@@ -1,66 +1,72 @@
 """
-CLI script for building a bigram model from a text corpus.
-Example: python scripts/build_bigram_model.py --input_dir data/raw/corpus --output_model data/model/bigram_matrix.npy
+CLI skript pro vytvoření bigramového modelu z textového korpusu.
+Příklad: python scripts/build_bigram_model.py --input_dir data/raw/corpus --output_model data/model/bigram_matrix.npy
 """
+# Importy
 import argparse
 import os
 import numpy as np
 from pathlib import Path
 
-# Assuming subcipher is installed or PYTHONPATH is set correctly
+# Importy z projektu subcipher
 from subcipher.stats import transition_matrix
 from subcipher.text_utils import clean_text
 
 def main():
-    parser = argparse.ArgumentParser(description="Build a bigram model from a text corpus.")
-    parser.add_argument("--input_dir", required=True, help="Directory containing raw text files for the corpus.")
-    parser.add_argument("--output_model", required=True, help="Path to save the generated bigram model (e.g., .npy).")
+    # Zpracování argumentů příkazové řádky
+    parser = argparse.ArgumentParser(description="Vytvoří bigramový model z textového korpusu.")
+    parser.add_argument("--input_dir", required=True, help="Adresář obsahující surové textové soubory pro korpus.")
+    parser.add_argument("--output_model", required=True, help="Cesta pro uložení vygenerovaného bigramového modelu (např. .npy).")
     args = parser.parse_args()
 
-    print(f"Building bigram model from corpus in: {args.input_dir}")
-    print(f"Output model will be saved to: {args.output_model}")
+    print(f"Vytváření bigramového modelu z korpusu v: {args.input_dir}")
+    print(f"Výstupní model bude uložen do: {args.output_model}")
 
     input_path = Path(args.input_dir)
     output_file_path = Path(args.output_model)
 
     corpus_texts = []
     if not input_path.is_dir():
-        print(f"Error: Input directory '{args.input_dir}' not found or is not a directory.")
+        print(f"Chyba: Vstupní adresář '{args.input_dir}' nebyl nalezen nebo není adresář.")
         return
 
+    # Načtení textů z korpusu
     for item in input_path.iterdir():
         if item.is_file():
             try:
-                with open(item, 'r', encoding='utf-8', errors='ignore') as f: # Specify encoding and error handling
+                with open(item, 'r', encoding='utf-8', errors='ignore') as f: # Specifikace kódování a ošetření chyb
                     corpus_texts.append(f.read())
-                print(f"Read file: {item}")
+                print(f"Načten soubor: {item}")
             except Exception as e:
-                print(f"Could not read file {item}: {e}")
+                print(f"Nepodařilo se načíst soubor {item}: {e}")
 
     if not corpus_texts:
-        print("No text files found in the input directory.")
+        print("Ve vstupním adresáři nebyly nalezeny žádné textové soubory.")
         return
 
     full_corpus = "\n".join(corpus_texts)
-    print(f"Total raw corpus length: {len(full_corpus)} characters.")
+    print(f"Celková délka surového korpusu: {len(full_corpus)} znaků.")
 
-    print("Cleaning corpus...")
+    # Čištění korpusu
+    print("Čištění korpusu...")
     cleaned_corpus = clean_text(full_corpus)
-    print(f"Cleaned corpus length: {len(cleaned_corpus)} characters.")
+    print(f"Délka vyčištěného korpusu: {len(cleaned_corpus)} znaků.")
 
     if not cleaned_corpus:
-        print("Cleaned corpus is empty. Cannot build model.")
+        print("Vyčištěný korpus je prázdný. Model nelze vytvořit.")
         return
 
-    print("Calculating transition matrix...")
+    # Výpočet matice přechodů
+    print("Výpočet matice přechodů...")
     tm = transition_matrix(cleaned_corpus)
 
+    # Uložení modelu
     try:
-        output_file_path.parent.mkdir(parents=True, exist_ok=True)
+        output_file_path.parent.mkdir(parents=True, exist_ok=True) # Vytvoření cílového adresáře, pokud neexistuje
         np.save(output_file_path, tm)
-        print(f"Bigram model saved successfully to: {args.output_model}")
+        print(f"Bigramový model úspěšně uložen do: {args.output_model}")
     except Exception as e:
-        print(f"Error saving model to {args.output_model}: {e}")
+        print(f"Chyba při ukládání modelu do {args.output_model}: {e}")
 
 if __name__ == "__main__":
     main()

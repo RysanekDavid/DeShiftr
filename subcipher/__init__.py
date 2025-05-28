@@ -1,5 +1,6 @@
-"""Substitution-cipher toolkit (encryption, decryption, cryptanalysis)."""
+"""Nástroje pro substituční šifry (šifrování, dešifrování, kryptoanalýza)."""
 
+# Importy
 from importlib.metadata import version as _v
 
 __all__ = [

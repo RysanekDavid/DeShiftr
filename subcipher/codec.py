@@ -1,36 +1,33 @@
-"""Encryption and decryption using a classical substitution cipher."""
+"""Šifrování a dešifrování klasickou substituční šifrou."""
 
+# Importy
 from __future__ import annotations
-
 from .alphabet import ALPHABET
 
 __all__ = ["encrypt", "decrypt"]
 
 
 def _perm_to_map(key: str, *, decrypt: bool = False) -> dict[str, str]:
-    """Create char → char mapping based on the provided key (permutation).
-
-    Raises
-    ------
-    ValueError
-        If the key is not a permutation of the 27 allowed characters.
+    """Vytvoří mapování znak -> znak na základě klíče (permutace).
+    
+    Vyvolá ValueError, pokud klíč není permutací 27 povolených znaků.
     """
     if len(key) != len(ALPHABET) or set(key) != set(ALPHABET):
-        raise ValueError("Key must be a permutation of the 27‑char alphabet.")
+        raise ValueError("Klíč musí být permutací 27-znakové abecedy.")
     return (
-        {p: k for p, k in zip(ALPHABET, key)}
+        {p: k for p, k in zip(ALPHABET, key)}  # Mapa pro šifrování
         if not decrypt
-        else {k: p for p, k in zip(ALPHABET, key)}
+        else {k: p for p, k in zip(ALPHABET, key)}  # Mapa pro dešifrování
     )
 
 
 def encrypt(plaintext: str, key: str) -> str:
-    """Returns the encrypted text."""
+    """Zašifruje text."""
     m = _perm_to_map(key, decrypt=False)
     return "".join(m.get(ch, ch) for ch in plaintext)
 
 
 def decrypt(ciphertext: str, key: str) -> str:
-    """Returns the decrypted text."""
+    """Dešifruje text."""
     m = _perm_to_map(key, decrypt=True)
     return "".join(m.get(ch, ch) for ch in ciphertext)
