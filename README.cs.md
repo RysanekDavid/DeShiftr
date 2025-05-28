@@ -1,8 +1,3 @@
-## Návrh upraveného `README.md`
-
-Zde jsou upravené sekce. Zaměřil jsem se na sjednocení argumentů a přidání poznámek o `.bat` souborech a spouštění notebooků.
-
-````markdown
 [English version](README.md)
 
 # Nástroje pro substituční šifru
@@ -35,7 +30,7 @@ Tento projekt je sada nástrojů pro práci se substitučními šiframi. Zahrnuj
 1.  **Klonujte repozitář:**
 
     ```bash
-    git clone [https://github.com/RysanekDavid/DeShiftr.git](https://github.com/RysanekDavid/DeShiftr.git)
+    git clone https://github.com/RysanekDavid/DeShiftr.git
     cd DeShiftr
     ```
 
@@ -72,15 +67,15 @@ Tato sekce vás provede základními kroky k prolomení šifry `text_1000_sample
 2.  **Sestavení referenčního bigramového modelu:**
     Tento krok vytvoří soubor `data/model/reference_tm.npy`, který je nezbytný pro kryptoanalýzu.
 
-        - **Možnost A: Použití dávkového souboru (doporučeno pro jednoduchost):**
-          ```bash
-          build_model.bat
-          ```
-        - **Možnost B: Spuštění Python skriptu přímo:**
-          `bash
-
-    python scripts/build_bigram_model.py --input_dir data/raw/corpus/ --output_model data/model/reference_tm.npy
-    `      Po úspěšném běhu byste měli vidět zprávu "Bigramový model úspěšně uložen do: data/model/reference_tm.npy" a debugovací výpisy z funkce`transition_matrix`, které potvrzují kvalitu modelu (např. `Max probability ... ~0.019` nebo vyšší).
+    - **Možnost A: Použití dávkového souboru (doporučeno pro jednoduchost):**
+      ```bash
+      build_model.bat
+      ```
+    - **Možnost B: Spuštění Python skriptu přímo:**
+      ```bash
+      python scripts/build_bigram_model.py --input_dir data/raw/corpus/ --output_model data/model/reference_tm.npy
+      ```
+      Po úspěšném běhu byste měli vidět zprávu "Bigramový model úspěšně uložen do: data/model/reference_tm.npy" a debugovací výpisy z funkce `transition_matrix`, které potvrzují kvalitu modelu (např. `Max probability ... ~0.019` nebo vyšší).
 
 3.  **Spuštění kryptoanalytického útoku:**
     Nyní prolomíme šifru `text_1000_sample_1_ciphertext.txt`. Ujistěte se, že tento soubor je umístěn v `data/test/`.
@@ -107,7 +102,6 @@ Pro spuštění sady testů (z kořenového adresáře projektu):
 ```bash
 pytest
 ```
-````
 
 Pro kontrolu pokrytí testy (vyžaduje `pytest-cov`):
 
@@ -154,7 +148,9 @@ Kromě `.bat` souborů můžete skripty spouštět i přímo. Následující př
   - `--ciphertext_file`: Cesta k souboru se šifrovým textem (např. `data/test/text_1000_sample_1_ciphertext.txt`).
   - `--length`: Nominální délka textu pro pojmenování výstupních souborů.
   - `--sample_id`: ID vzorku pro pojmenování výstupních souborů.
-    Volitelné argumenty (mají defaultní hodnoty):
+
+  Volitelné argumenty (mají defaultní hodnoty):
+
   - `--model_path`: Cesta k `reference_tm.npy` (default: `data/model/reference_tm.npy`).
   - `--output_dir`: Adresář pro export výsledků (default: `exports/attack_results_script/`).
   - `--iters`: Počet iterací M-H (default: 20000).
@@ -164,4 +160,4 @@ Kromě `.bat` souborů můžete skripty spouštět i přímo. Následující př
 
 ## Licence
 
-Tento projekt je licencován pod licencí MIT - viz soubor [LICENSE](https://www.google.com/search?q=LICENSE) pro podrobnosti.
+Tento projekt je licencován pod licencí MIT - viz soubor [LICENSE](LICENSE) pro podrobnosti.
