@@ -8,11 +8,11 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
-      - id: check-ast # Checks Python AST for simple syntax errors
+      - id: check-ast
       - id: check-docstring-first
       - id: check-merge-conflict
       - id: debug-statements
-      - id: name-tests-test # Checks that test files are named correctly
+      - id: name-tests-test
 
   - repo: https://github.com/psf/black
     rev: 23.11.0 # Updated version
@@ -27,37 +27,9 @@ repos:
         name: isort (python)
         args: ["--profile", "black", "--filter-files"]
     # -   id: isort # if you want to sort notebook imports
-    #     name: isort (jupyter)
-    #     types: [jupyter]
-    #     args: ["--profile", "black"]
 
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0 # Use the latest version
     hooks:
       - id: flake8
         # args: ['--max-line-length=88', '--extend-ignore=E203,W503'] # Configured in pyproject.toml
-# Optional: Pylint (can be slow as a pre-commit hook)
-# -   repo: local
-#     hooks:
-#     -   id: pylint
-#         name: pylint
-#         entry: pylint
-#         language: system
-#         types: [python]
-#         args:
-#           - --rcfile=.pylintrc # Link to your pylint config
-#           # Add any other pylint args e.g. --fail-under=8.0
-
-# Optional: mypy for static type checking
-# -   repo: https://github.com/pre-commit/mirrors-mypy
-#     rev: 'v1.3.0'  # Use the latest version
-#     hooks:
-#     -   id: mypy
-#         args: [--ignore-missing-imports]
-#         # additional_dependencies: [types-requests] # Add types for libraries if needed
-
-# Optional: Jupyter notebook cleaning
-# -   repo: https://github.com/kynan/nbstripout
-#     rev: 0.6.1
-#     hooks:
-#       - id: nbstripout
